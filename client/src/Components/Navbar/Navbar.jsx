@@ -21,10 +21,10 @@ function Navbar() {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-8">
-          {["Home", "Properties", "About","Contact"].map((item) => (
+          {["Home", "Properties", "About", "Sample Agreement", "Contact"].map((item) => (
             <Link
               key={item}
-              to={`/${item === "Home" ? "" : item.toLowerCase()}`}
+              to={`/${item === "Home" ? "" : item.toLowerCase().replace(/\s+/g, "-")}`}
               className="relative text-gray-700 font-medium hover:text-blue-700 transition duration-300 group"
             >
               {item}
@@ -44,7 +44,7 @@ function Navbar() {
           </Link>
           <Link
             to="/properties"
-            className="bg-gradient-to-r  from-blue-600 to-blue-800 text-white px-5 py-3 rounded-full text-sm font-semibold shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300"
+            className="bg-gradient-to-r from-blue-600 to-blue-800 text-white px-5 py-3 rounded-full text-sm font-semibold shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300"
           >
             List Property
           </Link>
@@ -66,10 +66,10 @@ function Navbar() {
         }`}
       >
         <div className="flex flex-col px-6 py-4 space-y-4">
-          {["Home", "Properties","About", "Contact"].map((item) => (
+          {["Home", "Properties", "About", "Sample Agreement", "Contact"].map((item) => (
             <Link
               key={item}
-              to={`/${item === "Home" ? "" : item.toLowerCase()}`}
+              to={`/${item === "Home" ? "" : item.toLowerCase().replace(/\s+/g, "-")}`}
               onClick={toggleMenu}
               className="text-gray-700 font-medium hover:text-blue-700 transition"
             >
