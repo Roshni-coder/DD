@@ -1,74 +1,75 @@
 import React from "react";
 import { AiOutlineCheckCircle } from "react-icons/ai";
-import heroImg from "../../assets/Villa.jpg"; // 🏠 Replace with your home image
+import heroImg from "../../assets/Villa.jpg"; // 🏠 Replace with your own image
 
 export default function About() {
   return (
     <div className="bg-white text-gray-800">
-      {/* 🌇 Hero Section - Opendoor Inspired */}
-      <section className="flex flex-col md:flex-row items-center justify-between min-h-[85vh] overflow-hidden bg-gradient-to-r from-white via-blue-50 to-red-50 relative">
+      {/* 🌇 Hero Section */}
+      <section className="flex flex-col-reverse md:flex-row items-center justify-between mt-20 md:mt-25 bg-gradient-to-r from-white via-blue-50 to-red-50 overflow-hidden relative">
         
         {/* Left Content */}
-        <div className="w-full md:w-1/2 flex flex-col justify-center items-start px-8 md:px-16 py-12 text-left space-y-6 z-10">
-          <div className="inline-flex items-center bg-white shadow-sm border border-gray-100 px-3 py-1 rounded-full text-sm font-medium">
+        <div className="w-full md:w-1/2 flex flex-col justify-center px-6 sm:px-10 md:px-16 py-12 space-y-6 text-left z-10">
+          <div className="inline-flex items-center   py-1.5 text-sm font-medium">
             <AiOutlineCheckCircle className="mr-2 text-red-500" />
             No Brokerage • Verified Listings
           </div>
 
-          <h1 className="text-5xl md:text-6xl font-extrabold leading-tight text-gray-900">
-            About <span className="text-red-500">Deal</span>
-            <span className="text-blue-600">Direct</span>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight text-gray-900">
+            About{" "}
+            <span className="text-red-500">Deal</span>
+            <span className="text-blue-800">Direct</span>
           </h1>
 
-          <p className="text-lg text-gray-600 max-w-md">
-            DealDirect connects property buyers, sellers, and renters directly — removing
-            brokers, reducing costs, and ensuring every deal is transparent and fair.
+          <p className="text-base sm:text-lg text-gray-600 max-w-md leading-relaxed">
+            DealDirect connects property buyers, sellers, and renters directly —
+            removing brokers, reducing costs, and ensuring every deal is transparent and fair.
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex gap-4 pt-2">
-            <button className="bg-gradient-to-r from-red-500 to-blue-600 text-white px-6 py-3 rounded-xl font-semibold shadow-md hover:opacity-90 transition duration-300">
+          <div className="flex flex-wrap gap-4 pt-2">
+            <button className="bg-gradient-to-r from-red-500 to-blue-800 text-white px-6 py-3 rounded-xl font-semibold shadow-md hover:opacity-90 transition duration-300">
               Explore Properties
             </button>
-            <button className="border-2 border-blue-600 text-blue-700 px-6 py-3 rounded-xl font-semibold hover:bg-blue-600 hover:text-white transition duration-300">
+            <button className="border-2 border-blue-800 text-blue-900 px-6 py-3 rounded-xl font-semibold hover:bg-blue-800 hover:text-white transition duration-300">
               List Your Property
             </button>
           </div>
         </div>
 
-        {/* Right Side Rounded Image */}
-        <div className="relative w-full md:w-1/2 h-[85vh] overflow-hidden flex justify-center items-center">
+        {/* Right Image */}
+        <div className="relative w-full md:w-1/2 h-[50vh] md:h-[85vh] overflow-hidden flex justify-center items-center">
           <div className="absolute inset-0 bg-gradient-to-l from-blue-100/40 to-transparent z-10" />
           <img
             src={heroImg}
             alt="DealDirect Home"
-            className="w-full h-full object-cover rounded-tl-[500px] rounded-bl-[500px] shadow-2xl"
+            className="w-full h-full object-cover rounded-tl-[300px] md:rounded-tl-[500px] md:rounded-bl-[500px] shadow-2xl"
           />
         </div>
 
-        {/* Soft Background Glow */}
-        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-200/30 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-red-200/30 rounded-full blur-3xl"></div>
+        {/* Background Glow */}
+        <div className="absolute top-0 right-0 w-[300px] h-[300px] md:w-[400px] md:h-[400px] bg-blue-200/30 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-[250px] h-[250px] md:w-[300px] md:h-[300px] bg-red-200/30 rounded-full blur-3xl"></div>
       </section>
 
       {/* 🎯 Mission Section */}
-      <section className="py-20 px-6 max-w-6xl mx-auto">
+      <section className="py-16 md:py-20 px-6 max-w-6xl mx-auto">
         <div className="grid md:grid-cols-2 gap-10 items-center">
           <div>
             <h2 className="text-3xl font-bold text-blue-900 mb-4">Our Mission</h2>
             <p className="text-gray-700 mb-4 leading-relaxed">
               At <span className="text-red-500 font-semibold">DealDirect</span>, our mission is to
-              empower individuals to buy, sell, or rent properties without intermediaries. We
-              believe real estate should be
-              <span className="text-blue-600 font-semibold"> simple, direct, </span>
-              and trustworthy.
+              empower individuals to buy, sell, or rent properties without intermediaries.
+              We believe real estate should be{" "}
+              <span className="text-blue-800 font-semibold">simple, direct,</span> and trustworthy.
             </p>
             <p className="text-gray-700 leading-relaxed">
-              By combining technology with transparency, we’re building a future where property
-              transactions happen with confidence, convenience, and connection.
+              By combining technology with transparency, we’re building a future where
+              property transactions happen with confidence, convenience, and connection.
             </p>
           </div>
 
+          {/* Optional Image */}
           {/* <div className="flex justify-center">
             <img
               src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80"
@@ -79,22 +80,22 @@ export default function About() {
         </div>
       </section>
 
-      {/* 🚀 Vision CTA Section */}
-      <section className="bg-gradient-to-r from-blue-50 to-red-50 py-20 px-6">
+      {/* 🚀 Vision Section */}
+      <section className="bg-gradient-to-r from-blue-50 to-red-50 py-16 md:py-20 px-6">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-blue-900 mb-4">Our Vision</h2>
           <p className="text-gray-700 max-w-3xl mx-auto leading-relaxed mb-8">
-            To become India’s most trusted property platform — where every
-            <span className="text-red-500 font-semibold"> home buyer </span>,
-            <span className="text-blue-600 font-semibold"> seller, </span> and
-            <span className="text-blue-900 font-semibold"> builder </span> can connect seamlessly,
+            To become India’s most trusted property platform — where every{" "}
+            <span className="text-red-500 font-semibold">home buyer</span>,{" "}
+            <span className="text-blue-800 font-semibold">seller</span>, and{" "}
+            <span className="text-blue-900 font-semibold">builder</span> can connect seamlessly,
             confidently, and directly.
           </p>
-          <div className="flex justify-center gap-4">
-            <button className="bg-gradient-to-r from-red-500 to-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition">
+          <div className="flex flex-wrap justify-center gap-4">
+            <button className="bg-gradient-to-r from-red-500 to-blue-800 text-white px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition">
               Explore Properties
             </button>
-            <button className="border-2 border-blue-600 text-blue-700 px-6 py-3 rounded-xl font-semibold hover:bg-blue-600 hover:text-white transition">
+            <button className="border-2 border-blue-800 text-blue-900 px-6 py-3 rounded-xl font-semibold hover:bg-blue-800 hover:text-white transition">
               List Your Property
             </button>
           </div>
@@ -102,7 +103,7 @@ export default function About() {
       </section>
 
       {/* 👥 Team Section */}
-      <section className="py-20 px-6 max-w-6xl mx-auto text-center">
+      <section className="py-16 md:py-20 px-6 max-w-6xl mx-auto text-center">
         <h2 className="text-3xl font-bold text-blue-900 mb-3">Meet the Team</h2>
         <p className="text-gray-600 mb-10">The innovators driving DealDirect forward</p>
 
@@ -118,20 +119,20 @@ export default function About() {
             >
               <div className="text-5xl mb-4">{member.emoji}</div>
               <h3 className="text-lg font-semibold text-gray-800">{member.name}</h3>
-              <div className="text-blue-600 font-medium">{member.role}</div>
+              <div className="text-blue-800 font-medium">{member.role}</div>
             </div>
           ))}
         </div>
       </section>
 
       {/* 💼 CTA Section */}
-      <section className="bg-gradient-to-r from-red-600 to-blue-700 text-white py-20 text-center relative overflow-hidden">
+      <section className="bg-gradient-to-r from-red-600 to-blue-800 text-white py-16 md:py-20 text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
         <h2 className="text-3xl font-bold mb-3 relative z-10">Start Your Property Journey Today</h2>
         <p className="mb-8 text-lg relative z-10">
           Join thousands who have found their dream property through DealDirect
         </p>
-        <button className="bg-white text-blue-700 font-semibold px-8 py-3 rounded-xl hover:bg-gray-100 transition relative z-10">
+        <button className="bg-white text-blue-800 font-semibold px-8 py-3 rounded-xl hover:bg-gray-100 transition relative z-10">
           Get Started
         </button>
       </section>
