@@ -296,7 +296,7 @@ const PropertyDetails = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div className="max-w-7xl mt-20 sm:mt-25 mx-auto py-8 px-4 sm:px-6 lg:px-8">
       {/* Property Header */}
       <div className="flex flex-col lg:flex-row gap-8 mb-12">
         {/* Image Gallery */}
@@ -332,7 +332,7 @@ const PropertyDetails = () => {
 
           {/* Thumbnail Gallery */}
           {property.images && property.images.length > 1 && (
-            <div className="grid grid-cols-6 gap-2">
+            <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
               {property.images.map((img, index) => (
                 <img
                   key={index}
@@ -353,25 +353,25 @@ const PropertyDetails = () => {
         {/* Property Info */}
         <div className="lg:w-1/2 lg:pl-8">
           <div className="mb-6">
-            <h1 className="text-4xl font-bold text-gray-900 mb-3 leading-tight">
+            <h1 className="text-xl sm:text-3xl md:text-4xl font-[600] text-gray-900 mb-3 leading-tight">
               {property.title}
             </h1>
             <div className="flex items-center text-gray-600 mb-4">
               <MapPinIcon className="w-5 h-5 mr-2" />
-              <span className="text-lg">{property.location}</span>
+              <span className="text-md">{property.location}</span>
             </div>
             <div className="flex items-baseline gap-2 mb-6">
-              <span className="text-4xl font-bold text-red-600">
+              <span className="text-xl sm:text-4xl font-bold text-red-600">
                 ₹{property.buyPrice.toLocaleString()}
               </span>
-              <span className="text-gray-500 text-lg">
+              <span className="text-gray-500 text-md md:text-3xl">
                 (₹{Math.round(property.buyPrice / 1800).toLocaleString()}/sq.ft.)
               </span>
             </div>
           </div>
 
           {/* Key Features Grid */}
-          <div className="grid grid-cols-2 gap-4 mb-8">
+          <div className="grid sm:grid-cols-2 grid-cols-1 gap-4 mb-8">
             <div className="bg-red-50 p-4 rounded-xl">
               <div className="flex items-center mb-2">
                 <HomeIcon className="w-5 h-5 text-red-600 mr-2" />
@@ -421,12 +421,12 @@ const PropertyDetails = () => {
               href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
+              className="flex-1 bg-green-500 hover:bg-green-600 text-white px-4 sm:px-6 md:px-8 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
             >
               <ChatBubbleLeftIcon className="w-5 h-5" />
               WhatsApp
             </a>
-            <button className="flex-1 bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl">
+            <button className="flex-1 bg-red-600 hover:bg-red-700 text-white px-4 py-4 sm:px-6 md:px-8 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl">
               <PhoneIcon className="w-5 h-5" />
               Call Now
             </button>
@@ -436,20 +436,20 @@ const PropertyDetails = () => {
 
       {/* Property Overview */}
       <div className="bg-gradient-to-br from-gray-50 to-red-50 rounded-2xl p-8 mb-12 shadow-inner">
-        <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
+        <h2 className="sm:text-3xl text-xl  font-bold mb-6 flex items-center gap-3">
           <BuildingStorefrontIcon className="w-8 h-8 text-red-600" />
           Property Overview
         </h2>
-        <p className="text-gray-700 leading-relaxed text-lg">
+        <p className="text-gray-700 leading-relaxed text-md sm:text-lg">
           {property.description}
         </p>
       </div>
 
       {/* 🧮 Enhanced Loan & EMI Calculator Section */}
-      <div className="mb-12 bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-2xl p-8 border border-gray-200">
+      <div className="mb-12 bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-2xl px-4 py-8 border border-gray-200">
         <div className="text-center mb-8">
-          <h2 className="text-4xl font-bold text-gray-900 mb-3 flex items-center justify-center gap-3">
-            <BanknotesIcon className="w-10 h-10 text-red-600" />
+          <h2 className="text-[18px] sm:text-3xl   font-bold text-gray-900 mb-3 flex items-center justify-center gap-2">
+            <BanknotesIcon className="w-7 h-7 sm:w-10 sm:h-10 text-red-600" />
             Loan & EMI Calculator
           </h2>
           <p className="text-gray-600 text-lg">
@@ -478,7 +478,7 @@ const PropertyDetails = () => {
 
             {/* Down Payment */}
             <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-              <div className="flex justify-between items-center mb-4">
+              <div className="flex sm:flex-row flex-col gap-2 justify-between items-center mb-4">
                 <label className="block text-lg font-semibold text-gray-800">
                   Down Payment
                 </label>
@@ -486,7 +486,7 @@ const PropertyDetails = () => {
                   {chartData.downPaymentPercent}% of property value
                 </span>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <input
                   type="range"
                   min={property.minDownPayment || 100000}
@@ -494,22 +494,22 @@ const PropertyDetails = () => {
                   step="50000"
                   value={loanData.downPayment}
                   onChange={(e) => handleDownPaymentChange(Number(e.target.value))}
-                  className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-red-600"
+                  className="w-full h-3 bg-gray-200 rounded-lg  cursor-pointer accent-red-600"
                 />
-                <div className="flex items-center space-x-3">
-                  <CurrencyRupeeIcon className="w-5 h-5 text-gray-500" />
+                <div className="flex items-center justify-start !pr-4 gap-2 w-100">
+                  <CurrencyRupeeIcon className="w-6 h-6 text-gray-500" />
                   <input
                     type="number"
                     value={loanData.downPayment}
                     onChange={(e) => handleDownPaymentChange(Number(e.target.value))}
-                    className="flex-1 text-xl font-semibold text-gray-900 border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                    className="flex w-[40%] sm:w-[80%] text-md px-2 font-semibold text-gray-900 border border-gray-300 rounded-xl  py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                   />
                 </div>
               </div>
             </div>
 
             {/* Interest Rate & Tenure */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid sm:grid-cols-2 grid-cols-1 gap-4">
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
                 <label className="block text-sm font-semibold text-gray-800 mb-3">
                   Interest Rate (% p.a.)
@@ -540,7 +540,7 @@ const PropertyDetails = () => {
             </div>
 
             {/* Loan Summary Cards */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid sm:grid-cols-2 grid-cols-1 gap-4">
               <LoanSummaryCard
                 icon={CurrencyRupeeIcon}
                 title="Loan Amount"
@@ -574,17 +574,17 @@ const PropertyDetails = () => {
             {/* EMI Display */}
             <div className="bg-gradient-to-br from-red-500 to-red-600 p-8 rounded-3xl text-white text-center shadow-2xl">
               <p className="text-lg font-medium mb-2 opacity-90">Monthly EMI</p>
-              <h3 className="text-5xl font-bold mb-4">
+              <h3 className="text-4xl sm:text-4xl font-bold mb-4">
                 ₹{displayValues.emi.toLocaleString()}
               </h3>
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
                   <p className="opacity-80">Total Payment</p>
-                  <p className="font-semibold text-lg">₹{displayValues.totalPayment.toLocaleString()}</p>
+                  <p className="font-semibold text-md sm:text-lg">₹{displayValues.totalPayment.toLocaleString()}</p>
                 </div>
                 <div>
                   <p className="opacity-80">Payable in</p>
-                  <p className="font-semibold text-lg">{loanData.tenure} Years</p>
+                  <p className="font-semibold text-md sm:text-lg">{loanData.tenure} Years</p>
                 </div>
               </div>
             </div>
@@ -606,7 +606,7 @@ const PropertyDetails = () => {
             </div>
 
             {/* Payment Breakdown */}
-            <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+            <div className="bg-white py-6 px-2 sm:px-6 rounded-2xl shadow-lg border border-gray-100">
               <h4 className="text-lg font-semibold text-gray-800 mb-4">Payment Breakdown</h4>
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
@@ -614,7 +614,7 @@ const PropertyDetails = () => {
                   <span className="font-semibold text-gray-800">₹{loanData.loanAmount.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Total Interest</span>
+                  <span className="text-gray-600 text-10">Total Interest</span>
                   <span className="font-semibold text-yellow-600">₹{loanData.totalInterest.toLocaleString()}</span>
                 </div>
                 <div className="border-t border-gray-200 pt-3">
@@ -631,7 +631,7 @@ const PropertyDetails = () => {
 
       {/* Location & Neighborhood */}
       <div className="mb-12">
-        <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
+        <h2 className="text-xl sm:text-3xl font-bold mb-6 flex items-center gap-3">
           <MapPinIcon className="w-8 h-8 text-red-600" />
           Location & Neighborhood
         </h2>

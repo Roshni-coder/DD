@@ -10,29 +10,26 @@ import Register from "./Pages/Register/Register.jsx";
 import About from "./Pages/About/About.jsx";
 import Contact from "./Pages/Contact/Contact.jsx";
 import SampleAgreement from "./Components/SampleAgreement/SampleAgreement.jsx"; // ✅ Added import
-
 function App() {
   return (
-    <Router>
-      {/* Common Navbar */}
-      <Navbar />
-
-      {/* Define Routes */}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/contact" element={<Contact />} /> 
-        <Route path="/properties" element={<PropertyPage />} />
-        <Route path="/property/:id" element={<PropertyDetails />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/sample-agreement" element={<SampleAgreement />} /> {/* ✅ Added Route */}
-      </Routes>
-
-      {/* Common Footer */}
-      <Footer />
-    </Router>
+    <div className="w-full min-h-screen overflow-x-hidden bg-white">
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/contact" element={<Contact />} /> 
+          <Route path="/properties" element={<PropertyPage />} />
+          <Route path="/property/:id" element={<PropertyDetails />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/sample-agreement" element={<SampleAgreement />} />
+        </Routes>
+        <Footer />
+      </Router>
+    </div>
   );
 }
+
 
 export default App;

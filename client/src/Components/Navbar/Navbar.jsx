@@ -25,13 +25,14 @@ function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+      className={`fixed
+         top-0 left-0 w-full z-50 transition-all duration-300 ${
         isScrolled
           ? "bg-white/95 backdrop-blur-md shadow-md py-3"
           : "bg-white/80 backdrop-blur-sm shadow-sm py-4"
       }`}
     >
-      <div className="max-w-7xl mx-auto flex items-center py-3 justify-between px-4 sm:px-6 lg:px-10">
+      <div className=" mx-auto flex items-center py-3 justify-between px-4 sm:px-6 lg:px-10">
         {/* ✅ Logo */}
         <Link to="/" className="flex items-center space-x-2">
           <img
