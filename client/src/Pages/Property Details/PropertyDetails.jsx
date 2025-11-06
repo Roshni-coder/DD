@@ -8,11 +8,11 @@ import {
   BuildingStorefrontIcon,
   PhoneIcon,
   ChatBubbleLeftIcon,
-  CurrencyRupeeIcon,
+  BanknotesIcon,
 } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
 
-const API_BASE = "http://localhost:9000";
+const API_BASE = import.meta.env.VITE_API_BASE;
 
 const PropertyDetails = () => {
   const { state } = useLocation();
@@ -23,25 +23,48 @@ const PropertyDetails = () => {
   const [error, setError] = useState(null);
   const [activeImage, setActiveImage] = useState(0);
 
+  // ---- EMI Section States ----
+  const [loanAmount, setLoanAmount] = useState(5000000);
+  const [interestRate, setInterestRate] = useState(8);
+  const [loanTenure, setLoanTenure] = useState(20);
+  const [emi, setEmi] = useState(0);
+  const [totalPayment, setTotalPayment] = useState(0);
+  const [totalInterest, setTotalInterest] = useState(0);
+
+  // ---- Fetch property ----
   useEffect(() => {
     if (property) return;
+
     const fetchProperty = async () => {
       try {
         const res = await axios.get(`${API_BASE}/api/properties/${id}`);
         setProperty(res.data.data);
       } catch (err) {
+        console.error(err);
         setError("Failed to load property details");
       } finally {
         setLoading(false);
       }
     };
     fetchProperty();
-  }, [id]);
+  }, [id, property]);
 
   const normalizeImages = (imgs = []) =>
     imgs.map((img) =>
       img && img.startsWith("/uploads") ? `${API_BASE}${img}` : img
     );
+
+  // ---- EMI Calculation ----
+  useEffect(() => {
+    const P = loanAmount;
+    const r = interestRate / 100 / 12;
+    const n = loanTenure * 12;
+    const emiCalc = (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+    const totalPay = emiCalc * n;
+    setEmi(emiCalc);
+    setTotalPayment(totalPay);
+    setTotalInterest(totalPay - P);
+  }, [loanAmount, interestRate, loanTenure]);
 
   if (loading)
     return (
@@ -179,7 +202,7 @@ const PropertyDetails = () => {
               <p>
                 <span className="font-semibold">Parking:</span>{" "}
                 {property.parking.available
-                  ? `${property.parking.type || "Available"}`
+                  ? property.parking.type || "Available"
                   : "Not Available"}
               </p>
             )}
@@ -221,6 +244,76 @@ const PropertyDetails = () => {
         <p className="text-gray-700 leading-relaxed text-lg">
           {property.description || "No description provided."}
         </p>
+      </div>
+
+      {/* ---- 🧮 Loan & EMI Section ---- */}
+      <div className="bg-white mt-12 p-8 rounded-3xl shadow-md border border-gray-100">
+        <h2 className="text-2xl font-bold mb-6 flex items-center gap-2 text-red-600">
+          <BanknotesIcon className="w-7 h-7" /> EMI & Loan Calculator
+        </h2>
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* Inputs */}
+          <div className="space-y-5">
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">
+                Loan Amount (₹)
+              </label>
+              <input
+                type="number"
+                value={loanAmount}
+                onChange={(e) => setLoanAmount(+e.target.value)}
+                className="w-full border-gray-300 rounded-lg p-3 border focus:ring-red-500 focus:border-red-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">
+                Interest Rate (% p.a)
+              </label>
+              <input
+                type="number"
+                step="0.1"
+                value={interestRate}
+                onChange={(e) => setInterestRate(+e.target.value)}
+                className="w-full border-gray-300 rounded-lg p-3 border focus:ring-red-500 focus:border-red-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">
+                Loan Tenure (Years)
+              </label>
+              <input
+                type="number"
+                value={loanTenure}
+                onChange={(e) => setLoanTenure(+e.target.value)}
+                className="w-full border-gray-300 rounded-lg p-3 border focus:ring-red-500 focus:border-red-500"
+              />
+            </div>
+          </div>
+
+          {/* Results */}
+          <div className="bg-gray-50 rounded-2xl p-6 shadow-inner text-center">
+            <p className="text-lg font-semibold text-gray-600 mb-2">
+              Monthly EMI
+            </p>
+            <p className="text-3xl font-bold text-red-600 mb-4">
+              ₹{emi.toFixed(0).toLocaleString()}
+            </p>
+            <p className="text-gray-700">
+              Total Payment:{" "}
+              <span className="font-semibold">
+                ₹{totalPayment.toFixed(0).toLocaleString()}
+              </span>
+            </p>
+            <p className="text-gray-700">
+              Total Interest:{" "}
+              <span className="font-semibold">
+                ₹{totalInterest.toFixed(0).toLocaleString()}
+              </span>
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* ---- Map ---- */}

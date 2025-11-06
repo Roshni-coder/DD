@@ -4,11 +4,13 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const API_BASE = import.meta.env.VITE_API_BASE;
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-
+  
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -21,7 +23,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:9000/api/users/login", formData);
+      const res = await axios.post(`${API_BASE}/api/users/login`, formData);
 
       toast.success("Login successful!");
       console.log("Logged in user:", res.data);
@@ -39,7 +41,6 @@ export default function Login() {
   return (
     <div className="min-h-[80vh] mt-10 flex items-center justify-center px-4 py-10 bg-gray-50">
       <div className="flex flex-col md:flex-row bg-white rounded-3xl shadow-2xl overflow-hidden w-full max-w-5xl">
-        
         {/* Left Section */}
         <div className="md:w-1/2 bg-gradient-to-br from-[#0056B8] to-[#ED1C24] text-white px-8 py-12 flex flex-col justify-center items-center text-center md:text-left">
           <h1 className="text-5xl font-extrabold mb-4 tracking-tight">
@@ -47,7 +48,8 @@ export default function Login() {
             <span className="text-yellow-200">direct</span>
           </h1>
           <p className="text-lg leading-relaxed max-w-md opacity-90">
-            Welcome back! Log in to explore <br /> verified, broker-free properties.
+            Welcome back! Log in to explore <br /> verified, broker-free
+            properties.
           </p>
         </div>
 

@@ -3,12 +3,15 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   AiOutlineSearch,
-  AiOutlineCheckCircle,
   AiOutlineSafetyCertificate,
+  AiOutlineStar,
+  AiOutlineHome,
+  AiOutlineDollarCircle,
 } from "react-icons/ai";
-import { FaShieldAlt, FaHome, FaUsers } from "react-icons/fa";
+import { FaShieldAlt, FaHome, FaUsers, FaBuilding, FaMapMarkerAlt } from "react-icons/fa";
 
-const API_BASE = "http://localhost:9000";
+const API_BASE = import.meta.env.VITE_API_BASE;
+
 
 const Home = () => {
   const [properties, setProperties] = useState([]);
@@ -23,7 +26,6 @@ const Home = () => {
   });
   const navigate = useNavigate();
 
-  // 🏡 Fetch all properties
   useEffect(() => {
     const fetchProperties = async () => {
       try {
@@ -36,7 +38,6 @@ const Home = () => {
     fetchProperties();
   }, []);
 
-  // 🗂️ Fetch categories
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -49,7 +50,6 @@ const Home = () => {
     fetchCategories();
   }, []);
 
-  // 🧩 Fetch subcategories when category changes
   useEffect(() => {
     const fetchSubcategories = async () => {
       if (!filters.category) {
@@ -68,7 +68,6 @@ const Home = () => {
     fetchSubcategories();
   }, [filters.category]);
 
-  // 🔍 Filtered properties (client-side)
   const filteredProperties = properties.filter((p) => {
     const title = (p.title || "").toLowerCase();
     const city = (p.address?.city || "").toLowerCase();
@@ -86,14 +85,59 @@ const Home = () => {
     const matchState =
       !filters.state || state.includes(filters.state.toLowerCase());
 
-    return matchSearch && matchCategory && matchSubcategory && matchCity && matchState;
+    return (
+      matchSearch &&
+      matchCategory &&
+      matchSubcategory &&
+      matchCity &&
+      matchState
+    );
   });
 
   const handleViewDetails = (property) => {
     navigate(`/properties/${property._id}`, { state: { property } });
   };
 
-  // Stats and features
+  // Major Indian Cities Data
+  const majorCities = [
+    { name: "Mumbai", properties: "25K+", image: "https://images.unsplash.com/photo-1560215986-02b1c78af74a?auto=format&fit=crop&w=400&q=80" },
+    { name: "Delhi", properties: "22K+", image: "https://images.unsplash.com/photo-1580519542036-c47de6196ba5?auto=format&fit=crop&w=400&q=80" },
+    { name: "Bengaluru", properties: "18K+", image: "https://images.unsplash.com/photo-1529209065735-c1a5e2cbea1f?auto=format&fit=crop&w=400&q=80" },
+    { name: "Hyderabad", properties: "15K+", image: "https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=400&q=80" },
+    { name: "Chennai", properties: "12K+", image: "https://images.unsplash.com/photo-1595079676339-153e7ea56a93?auto=format&fit=crop&w=400&q=80" },
+    { name: "Kolkata", properties: "10K+", image: "https://images.unsplash.com/photo-1582573613351-495bdfa3d96e?auto=format&fit=crop&w=400&q=80" },
+    { name: "Pune", properties: "14K+", image: "https://images.unsplash.com/photo-1597040663342-45b6af3e0917?auto=format&fit=crop&w=400&q=80" },
+    { name: "Ahmedabad", properties: "8K+", image: "https://images.unsplash.com/photo-1633152617887-e10dbd5027d3?auto=format&fit=crop&w=400&q=80" },
+  ];
+
+  const allCities = [
+    "Mumbai", "Delhi", "Bengaluru", "Hyderabad", "Chennai", "Kolkata", "Pune", "Ahmedabad",
+    "Surat", "Jaipur", "Lucknow", "Kanpur", "Nagpur", "Patna", "Indore", "Thane",
+    "Bhopal", "Visakhapatnam", "Vadodara", "Firozabad", "Ludhiana", "Rajkot", "Agra",
+    "Siliguri", "Nashik", "Faridabad", "Patiala", "Meerut", "Kalyan", "Vasai", "Varanasi",
+    "Srinagar", "Aurangabad", "Dhanbad", "Amritsar", "Navi Mumbai", "Allahabad", "Ranchi",
+    "Howrah", "Coimbatore", "Jabalpur", "Gwalior", "Vijayawada", "Jodhpur", "Madurai",
+    "Raipur", "Kota", "Guwahati", "Chandigarh", "Solapur", "Hubli", "Dharwad"
+  ];
+
+  const featuredDevelopers = [
+    { name: "DLF", projects: "150+", logo: "🏢" },
+    { name: "Sobha", projects: "120+", logo: "🏛" },
+    { name: "Prestige", projects: "180+", logo: "🏬" },
+    { name: "Godrej", projects: "90+", logo: "🏣" },
+    { name: "Brigade", projects: "110+", logo: "🏤" },
+    { name: "Lodha", projects: "130+", logo: "🏨" },
+  ];
+
+  const propertyTypes = [
+    { type: "Apartments", count: "45K+", icon: "🏢" },
+    { type: "Villas", count: "12K+", icon: "🏡" },
+    { type: "Plots", count: "8K+", icon: "📐" },
+    { type: "Commercial", count: "15K+", icon: "🏬" },
+    { type: "Farm Houses", count: "3K+", icon: "🌾" },
+    { type: "PG/Hostels", count: "5K+", icon: "🏘" },
+  ];
+
   const stats = [
     { number: "10,000+", label: "Properties Listed" },
     { number: "₹2,500Cr+", label: "Property Value" },
@@ -124,30 +168,11 @@ const Home = () => {
     },
   ];
 
-  const features = [
-    {
-      icon: <AiOutlineCheckCircle className="text-red-600 text-3xl" />,
-      title: "Verified Listings",
-      description: "All properties are verified to ensure authenticity.",
-    },
-    {
-      icon: <AiOutlineCheckCircle className="text-red-600 text-3xl" />,
-      title: "No Brokerage",
-      description: "Direct contact with owners saves you fees.",
-    },
-    {
-      icon: <AiOutlineCheckCircle className="text-red-600 text-3xl" />,
-      title: "Easy Search",
-      description: "Advanced filters for quick and easy results.",
-    },
-  ];
-
   return (
     <div className="font-sans text-gray-800">
-      {/* 🏠 Hero Section with Dynamic Search */}
-      <section className="mt-20 relative h-[75vh] flex flex-col justify-center items-center text-center bg-gray-50 px-6">
+      {/* 🏠 Hero Section */}
+      <section className="mt-25 relative h-[75vh] flex flex-col justify-center items-center text-center bg-gray-50 px-6">
         <div className="absolute inset-0 bg-[url('https://www.toptal.com/designers/subtlepatterns/patterns/white-wall.png')] opacity-20"></div>
-
         <div className="relative z-10 flex flex-col items-center space-y-5 max-w-6xl w-full">
           <h1 className="text-5xl md:text-6xl font-bold text-red-600">
             Welcome to <span className="text-blue-900">DealDirect</span>
@@ -156,16 +181,17 @@ const Home = () => {
             Search from verified listings & connect directly with property owners.
           </p>
 
-          {/* 🔍 Dynamic Search Filters */}
+          {/* 🔍 Search Filters */}
           <div className="bg-white shadow-2xl rounded-2xl p-6 w-full max-w-5xl border border-gray-100">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-              
-
-              {/* Category */}
               <select
                 value={filters.category}
                 onChange={(e) =>
-                  setFilters({ ...filters, category: e.target.value, subcategory: "" })
+                  setFilters({
+                    ...filters,
+                    category: e.target.value,
+                    subcategory: "",
+                  })
                 }
                 className="border bg-red-600 rounded-full px-4 py-3 text-white focus:ring-2 focus:ring-red-500 outline-none"
               >
@@ -177,10 +203,11 @@ const Home = () => {
                 ))}
               </select>
 
-              {/* Subcategory */}
               <select
                 value={filters.subcategory}
-                onChange={(e) => setFilters({ ...filters, subcategory: e.target.value })}
+                onChange={(e) =>
+                  setFilters({ ...filters, subcategory: e.target.value })
+                }
                 disabled={!filters.category}
                 className="border bg-red-600 rounded-full px-4 py-3 text-white focus:ring-2 focus:ring-red-500 outline-none"
               >
@@ -196,163 +223,221 @@ const Home = () => {
                 type="text"
                 placeholder="City"
                 value={filters.city}
-                onChange={(e) => setFilters({ ...filters, city: e.target.value })}
+                onChange={(e) =>
+                  setFilters({ ...filters, city: e.target.value })
+                }
                 className="border bg-red-600 rounded-full px-4 py-3 text-white focus:ring-2 focus:ring-red-500 outline-none"
               />
               <input
                 type="text"
                 placeholder="State"
                 value={filters.state}
-                onChange={(e) => setFilters({ ...filters, state: e.target.value })}
+                onChange={(e) =>
+                  setFilters({ ...filters, state: e.target.value })
+                }
                 className="border bg-red-600 rounded-full px-4 py-3 text-white focus:ring-2 focus:ring-red-500 outline-none"
               />
             </div>
-<div className="flex">
-  <input
+
+            <div className="flex mt-4">
+              <input
                 type="text"
                 placeholder="Search by keyword or title"
                 value={filters.search}
-                onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-                className="border w-full rounded-lg px-4  text-gray-700 focus:ring-2 focus:ring-red-500 outline-none"
+                onChange={(e) =>
+                  setFilters({ ...filters, search: e.target.value })
+                }
+                className="border w-full rounded-full px-4 text-gray-700 focus:ring-2 focus:ring-red-500 outline-none"
               />
-              <button className="mt-6  bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold text-lg flex items-center justify-center gap-2">
-              <AiOutlineSearch /> Search 
-            </button>
-</div>
-            
+              <button className="ml-3 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-full font-semibold text-lg flex items-center justify-center gap-2">
+                <AiOutlineSearch /> Search
+              </button>
+            </div>
+          </div>
+
+          {/* Hero Tabs */}
+          <div className="flex flex-wrap justify-center gap-3 mt-8">
+            {["Buy", "Rent", "New Projects", "PG", "Plot", "Commercial", "Post Free Ad"].map(
+              (tab, i) => (
+                <button
+                  key={i}
+                  className="bg-white border border-gray-200 text-gray-700 hover:text-white hover:bg-red-600 font-semibold px-5 py-2 rounded-full shadow-md transition-all duration-200"
+                >
+                  {tab}
+                </button>
+              )
+            )}
           </div>
         </div>
       </section>
 
-      {/* 🏘️ Property Grid */}
-      <div className="max-w-7xl mx-auto mt-16 p-6">
-        <h1 className="text-3xl font-bold mb-6 text-gray-800">
-          🏘️ Available Properties
-        </h1>
+      {/* 🏙 Featured Properties */}
+      <section className="py-10 bg-white">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <h2 className="text-3xl font-bold mb-12 text-gray-800">
+            Featured Properties
+          </h2>
+          {filteredProperties.length === 0 ? (
+            <p className="text-gray-500">No properties found.</p>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredProperties.map((property) => (
+                <div
+                  key={property._id}
+                  className="bg-white shadow-xl rounded-xl overflow-hidden hover:shadow-2xl transition duration-300"
+                >
+                  <img
+                    src={`${API_BASE}${property.images?.[0] || ""}`}
+                    alt={property.title}
+                    className="h-60 w-full object-cover"
+                  />
+                  <div className="p-5">
+                    <h2 className="text-lg font-semibold truncate">
+                      {property.title}
+                    </h2>
+                    <p className="text-gray-600 text-sm mb-2">
+                      {property.address?.city}, {property.address?.state}
+                    </p>
+                    <p className="text-red-600 font-bold text-lg mb-3">
+                      ₹{property.price?.toLocaleString()} {property.priceUnit}
+                    </p>
+                    <button
+                      onClick={() => handleViewDetails(property)}
+                      className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg font-semibold"
+                    >
+                      View Details
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+        <section className="bg-gradient-to-r from-blue-600 to-red-600 py-4 text-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            {stats.map((stat, idx) => (
+              <div key={idx}>
+                <div className="text-2xl md:text-3xl font-bold mb-1">{stat.number}</div>
+                <div className="text-sm opacity-90">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-        {filteredProperties.length === 0 ? (
-          <p className="text-center text-gray-500">No properties found.</p>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProperties.map((property) => (
-              <div
-                key={property._id}
-                className="bg-white shadow-xl rounded-xl overflow-hidden hover:shadow-2xl transition duration-300"
-              >
-                <img
-                  src={`${API_BASE}${property.images?.[0] || ""}`}
-                  alt={property.title}
-                  className="h-60 w-full object-cover"
-                />
-                <div className="p-5">
-                  <h2 className="text-lg font-semibold truncate">{property.title}</h2>
-                  <p className="text-gray-600 text-sm mb-2">
-                    {property.address?.city}, {property.address?.state}
-                  </p>
-                  <p className="text-red-600 font-bold text-lg mb-3">
-                    ₹{property.price?.toLocaleString()} {property.priceUnit}
-                  </p>
-                  <button
-                    onClick={() => handleViewDetails(property)}
-                    className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg font-semibold"
-                  >
-                    View Details
-                  </button>
+      {/* 🏙 Featured Cities */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">
+              Explore Properties Across India
+            </h2>
+            <p className="text-gray-600 text-lg">Discover your dream home in top cities</p>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 mb-12">
+            {majorCities.map((city, index) => (
+              <div key={index} className="relative group rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
+                <img src={city.image} alt={city.name} className="w-full h-32 object-cover group-hover:scale-110 transition duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                  <h3 className="font-bold text-lg">{city.name}</h3>
+                  <p className="text-sm opacity-90">{city.properties} Properties</p>
                 </div>
               </div>
             ))}
           </div>
-        )}
-      </div>
 
-      {/* 🌆 Banner Section */}
-      <section className="relative h-[400px] mt-16 bg-cover bg-center bg-no-repeat flex items-center justify-center text-white text-center px-6">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=2000&q=80')",
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-red-700/80"></div>
-        <div className="relative z-10 max-w-4xl space-y-6">
-          <h2 className="text-4xl md:text-5xl font-bold">
-            Because Every Family Deserves a Home Filled with Love
-          </h2>
-          <p className="text-lg opacity-90">
-            Your journey to finding the perfect home starts here.
-          </p>
-          <button className="bg-white text-red-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition transform hover:scale-105">
-            Explore Now
-          </button>
-        </div>
-      </section>
-
-      {/* 📊 Stats Section */}
-      <section className="py-12 bg-white">
-        <div className="container mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          {stats.map((stat, idx) => (
-            <div
-              key={idx}
-              className="bg-white rounded-lg shadow py-6 border border-blue-100"
-            >
-              <div className="text-2xl font-bold mb-1 text-red-600">
-                {stat.number}
-              </div>
-              <div className="text-gray-500 text-sm">{stat.label}</div>
+          <div className="bg-gray-50 rounded-2xl p-8">
+            <h3 className="text-2xl font-bold text-center mb-8 text-gray-800">
+              50+ Cities Across India
+            </h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+              {allCities.map((city, index) => (
+                <div
+                  key={index}
+                  className="bg-white rounded-lg p-3 text-center shadow-sm hover:shadow-md transition-shadow cursor-pointer hover:bg-red-50 border border-gray-200"
+                >
+                  <FaMapMarkerAlt className="text-red-600 mx-auto mb-2" />
+                  <span className="text-sm font-medium text-gray-700">{city}</span>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </section>
 
-      {/* 🛡️ Why DealDirect */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 to-red-600 text-white">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4">Why Millions Trust DealDirect</h2>
-            <p className="text-lg opacity-90 max-w-3xl mx-auto">
-              India's most trusted real estate platform for verified, transparent, and broker-free deals.
-            </p>
+      {/* 🏢 Developers */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <h2 className="text-3xl font-bold text-gray-800 mb-4">
+            Trusted by Every Indian
+          </h2>
+          <p className="text-gray-600 mb-10">Partnered with 100+ renowned real estate brands</p>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            {featuredDevelopers.map((dev, index) => (
+              <div key={index} className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition transform hover:scale-105">
+                <div className="text-3xl mb-3">{dev.logo}</div>
+                <h3 className="font-bold text-gray-800 mb-1">{dev.name}</h3>
+                <p className="text-sm text-gray-600">{dev.projects} Projects</p>
+              </div>
+            ))}
           </div>
+        </div>
+      </section>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {trustFeatures.map((feature, index) => (
+      {/* 🏘 Property Types */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <h2 className="text-3xl font-bold text-gray-800 mb-4">
+            Find Your Perfect Property Type
+          </h2>
+          <p className="text-gray-600 mb-10">Explore diverse property categories tailored to your needs</p>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            {propertyTypes.map((type, index) => (
               <div
                 key={index}
-                className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-8 text-center hover:bg-opacity-20 transition transform hover:scale-105 border border-white border-opacity-20"
+                className="bg-gradient-to-br from-blue-50 to-red-50 rounded-xl p-6 text-center shadow-md hover:shadow-lg transition transform hover:scale-105 border"
               >
-                <div className="flex justify-center mb-4">{feature.icon}</div>
-                <h3 className="text-xl font-bold mb-3 text-white">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-200 text-sm">{feature.description}</p>
+                <div className="text-3xl mb-3">{type.icon}</div>
+                <h3 className="font-bold text-gray-800 mb-1">{type.type}</h3>
+                <p className="text-sm text-gray-600">{type.count} Listings</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 🌟 Features */}
-      <section className="bg-white py-16">
-        <div className="container mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
-            Why Choose DealDirect?
-          </h2>
-          <p className="text-center text-gray-600 mb-12">
-            Experience real estate like never before with our unique advantages
+      {/* 🎉 Mega Advertisement */}
+      <section className="py-16 bg-gradient-to-r from-blue-900 to-red-800 text-white text-center">
+        <div className="max-w-7xl mx-auto px-6">
+          <FaBuilding className="text-5xl mx-auto mb-6" />
+          <h2 className="text-4xl font-bold mb-4">Ready to Find Your Dream Home?</h2>
+          <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
+            Join 2M+ satisfied customers who found their perfect property on DealDirect
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {features.map((f, idx) => (
-              <div
-                key={idx}
-                className="bg-white px-6 py-6 rounded-xl shadow-lg text-center hover:shadow-2xl transition border border-blue-100"
-              >
-                <div className="flex justify-center text-4xl">{f.icon}</div>
-                <h3 className="font-semibold text-xl mt-3 mb-2">{f.title}</h3>
-                <p className="text-gray-500 text-sm">{f.description}</p>
-              </div>
-            ))}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button className="bg-white text-red-600 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition">
+              Browse Properties
+            </button>
+            <button className="border-2 border-white text-white px-8 py-4 rounded-xl font-semibold hover:bg-white/10 transition">
+              <AiOutlineDollarCircle /> Get Home Loan
+            </button>
           </div>
+        </div>
+      </section>
+
+      {/* 📈 Investment Banner */}
+      <section className="py-16 bg-gray-100 text-center">
+        <div className="max-w-7xl mx-auto px-6 bg-gradient-to-r from-green-600 to-emerald-700 rounded-2xl p-8 text-white">
+          <AiOutlineStar className="text-4xl mx-auto mb-4" />
+          <h3 className="text-2xl font-bold mb-3">Smart Investment Opportunity</h3>
+          <p className="text-lg mb-6 opacity-90">Properties in top cities appreciating 15–20% annually</p>
+          <button className="bg-white text-green-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
+            View High ROI Properties →
+          </button>
         </div>
       </section>
     </div>
