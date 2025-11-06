@@ -1,19 +1,39 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineUser, AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import logo from "../../assets/dealdirect_logo.webp";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
+  // ✅ Toggle mobile menu
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
+  // ✅ Scroll effect for navbar
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // ✅ Load user from localStorage
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  // ✅ Handle Logout
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    setUser(null);
+    navigate("/login");
+  };
 
   const navItems = [
     "Home",
@@ -25,14 +45,13 @@ function Navbar() {
 
   return (
     <nav
-      className={`fixed
-         top-0 left-0 w-full z-50 transition-all duration-300 ${
+      className={`fixed top-0 p-2 left-0 w-full z-50 transition-all duration-300 ${
         isScrolled
           ? "bg-white/95 backdrop-blur-md shadow-md py-3"
           : "bg-white/80 backdrop-blur-sm shadow-sm py-4"
       }`}
     >
-      <div className=" mx-auto flex items-center py-3 justify-between px-4 sm:px-6 lg:px-10">
+      <div className="mx-auto p-3 flex items-center justify-between px-4 sm:px-6 lg:px-10">
         {/* ✅ Logo */}
         <Link to="/" className="flex items-center space-x-2">
           <img
@@ -58,13 +77,29 @@ function Navbar() {
 
         {/* ✅ Right Section */}
         <div className="flex items-center space-x-3 sm:space-x-5 lg:space-x-7">
-          <Link
-            to="/login"
-            className="flex items-center space-x-1 text-gray-700 hover:text-blue-700 transition"
-          >
-            <AiOutlineUser className="text-xl sm:text-2xl" />
-            <span className="font-medium hidden sm:block">Login</span>
-          </Link>
+          {user ? (
+            // ✅ When logged in
+            <div className="flex items-center space-x-3">
+              <span className="text-gray-700 font-medium">
+                Hi, {user.name?.split(" ")[0] || "User"}
+              </span>
+              <button
+                onClick={handleLogout}
+                className="text-sm text-red-500 hover:underline"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            // ✅ When not logged in
+            <Link
+              to="/login"
+              className="flex items-center space-x-1 text-gray-700 hover:text-blue-700 transition"
+            >
+              <AiOutlineUser className="text-xl sm:text-2xl" />
+              <span className="font-medium hidden sm:block">Login</span>
+            </Link>
+          )}
 
           <Link
             to="/properties"
@@ -103,6 +138,31 @@ function Navbar() {
             </Link>
           ))}
 
+          {user ? (
+            <div className="flex flex-col items-center space-y-3">
+              <span className="text-gray-700 font-medium">
+                Hi, {user.name?.split(" ")[0] || "User"}
+              </span>
+              <button
+                onClick={() => {
+                  handleLogout();
+                  toggleMenu();
+                }}
+                className="text-red-500 hover:underline text-sm"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <Link
+              to="/login"
+              onClick={toggleMenu}
+              className="text-gray-700 font-medium hover:text-blue-700 transition"
+            >
+              Login
+            </Link>
+          )}
+
           <Link
             to="/properties"
             onClick={toggleMenu}
@@ -117,3 +177,4 @@ function Navbar() {
 }
 
 export default Navbar;
+

@@ -19,7 +19,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/contact" element={<Contact />} /> 
           <Route path="/properties" element={<PropertyPage />} />
-          <Route path="/property/:id" element={<PropertyDetails />} />
+          <Route path="/properties/:id" element={<PropertyDetails />} />
           <Route path="/login" element={<Login />} />
           <Route path="/about" element={<About />} />
           <Route path="/register" element={<Register />} />

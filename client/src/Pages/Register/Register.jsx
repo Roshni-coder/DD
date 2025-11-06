@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -8,6 +11,8 @@ export default function Register() {
     agree: false,
   });
 
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
@@ -16,29 +21,46 @@ export default function Register() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Register data submitted:", formData);
-    alert("Account created successfully!");
+    if (!formData.agree) {
+      toast.error("Please agree to the Terms and Privacy Policy");
+      return;
+    }
+
+    try {
+      const res = await axios.post("http://localhost:9000/api/users/register", {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+      });
+
+      toast.success("Account created successfully!");
+      console.log("Registered user:", res.data);
+      navigate("/login"); // redirect after success
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Registration failed");
+    }
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-10 bg-gray-50">
-      <div className="flex flex-col mt-25 md:flex-row bg-white rounded-3xl shadow-2xl overflow-hidden w-full max-w-5xl transition-all duration-300">
+    <div className="min-h-[80vh] mt-20 flex items-center justify-center px-4 py-10 bg-gray-50">
+      <div className="flex flex-col md:flex-row bg-white rounded-3xl shadow-2xl overflow-hidden w-full max-w-5xl transition-all duration-300">
+        
         {/* Left Section */}
-        <div className="md:w-1/2 bg-gradient-to-br from-[#0056B8] to-[#ED1C24] text-white px-8 sm:px-10 py-12 flex flex-col justify-center items-center text-center md:text-left">
-          <h1 className="text-4xl sm:text-5xl font-extrabold mb-4 tracking-tight">
+        <div className="md:w-1/2 bg-gradient-to-br from-[#0056B8] to-[#ED1C24] text-white px-8 py-12 flex flex-col justify-center items-center text-center md:text-left">
+          <h1 className="text-5xl font-extrabold mb-4 tracking-tight">
             <span className="text-white">deal</span>
             <span className="text-yellow-200">direct</span>
           </h1>
-          <p className="text-base sm:text-lg leading-relaxed max-w-md opacity-90">
+          <p className="text-lg leading-relaxed max-w-md opacity-90">
             Create your account to start exploring <br /> broker-free properties and deals!
           </p>
         </div>
 
         {/* Right Section */}
         <div className="md:w-1/2 py-10 px-6 sm:px-10 flex flex-col justify-center bg-white">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 text-center md:text-left">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center md:text-left">
             Create Your Account
           </h2>
 
@@ -50,9 +72,8 @@ export default function Register() {
               value={formData.name}
               onChange={handleChange}
               required
-              className="px-4 py-3 border border-gray-300 rounded-xl text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-red-400 transition"
+              className="px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-400"
             />
-
             <input
               type="email"
               name="email"
@@ -60,9 +81,8 @@ export default function Register() {
               value={formData.email}
               onChange={handleChange}
               required
-              className="px-4 py-3 border border-gray-300 rounded-xl text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-red-400 transition"
+              className="px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-400"
             />
-
             <input
               type="password"
               name="password"
@@ -70,17 +90,17 @@ export default function Register() {
               value={formData.password}
               onChange={handleChange}
               required
-              className="px-4 py-3 border border-gray-300 rounded-xl text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-red-400 transition"
+              className="px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-400"
             />
 
-            <label className="flex items-start sm:items-center text-xs sm:text-sm text-gray-600 leading-tight">
+            <label className="flex items-start text-sm text-gray-600">
               <input
                 type="checkbox"
                 name="agree"
                 checked={formData.agree}
                 onChange={handleChange}
                 required
-                className="mr-2 mt-1 sm:mt-0 accent-red-500"
+                className="mr-2 accent-red-500 mt-1"
               />
               <span>
                 I agree to the{" "}
@@ -96,13 +116,13 @@ export default function Register() {
 
             <button
               type="submit"
-              className="bg-gradient-to-r from-red-500 to-blue-500 text-white py-3 rounded-xl font-semibold text-sm sm:text-base hover:opacity-90 transition"
+              className="bg-gradient-to-r from-red-500 to-blue-500 text-white py-3 rounded-xl font-semibold hover:opacity-90 transition"
             >
               Sign Up
             </button>
           </form>
 
-          <p className="mt-6 text-xs sm:text-sm text-gray-600 text-center md:text-left">
+          <p className="mt-6 text-sm text-gray-600 text-center">
             Already have an account?{" "}
             <a href="/login" className="text-blue-500 hover:underline">
               Login here
