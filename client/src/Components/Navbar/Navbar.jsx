@@ -155,7 +155,7 @@ function Navbar() {
         isScrolled ? "bg-white shadow-lg py-2" : "bg-white shadow-md py-3"
       }`}
     >
-      <div className="mx-auto flex items-center justify-between px-6 lg:px-8">
+      <div className="mx-auto py-4 flex items-center justify-between px-6 lg:px-8">
         {/* Logo */}
         <Link to="/" className="flex items-center mr-6">
           <img
@@ -212,7 +212,12 @@ function Navbar() {
           >
             Contact
           </Link>
-
+ <Link
+            to="/properties"
+            className="text-gray-700 hover:text-blue-600 font-medium transition text-[15px]"
+          >
+            Properties
+          </Link>
           {user ? (
             <div className="flex items-center space-x-3">
               <span className="text-gray-700 font-medium text-sm">
@@ -236,10 +241,10 @@ function Navbar() {
           )}
 
           <Link
-            to="/properties"
+            to="/add-property"
             className="bg-blue-600 text-white px-5 py-2.5 rounded-lg text-sm font-semibold shadow-md hover:bg-blue-700 hover:shadow-lg transition-all duration-300"
           >
-            List Property
+            Upload Property
           </Link>
         </div>
 

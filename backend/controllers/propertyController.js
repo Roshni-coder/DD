@@ -27,15 +27,11 @@ export const addProperty = async (req, res) => {
       data: newProperty,
     });
   } catch (error) {
-    console.error("Error in addProperty:", error);
-    res.status(500).json({
-      success: false,
-      message: error.message || "Failed to add property",
-    });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// 📋 Get All Properties
+// 📋 Get All Properties (Admin)
 export const getProperties = async (req, res) => {
   try {
     const properties = await Property.find()
@@ -45,11 +41,7 @@ export const getProperties = async (req, res) => {
 
     res.status(200).json({ success: true, data: properties });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to fetch properties",
-      error: error.message,
-    });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
@@ -59,6 +51,7 @@ export const getPropertyById = async (req, res) => {
     const property = await Property.findById(req.params.id)
       .populate("category", "name")
       .populate("subcategory", "name");
+
     if (!property)
       return res
         .status(404)
@@ -85,7 +78,6 @@ export const updateProperty = async (req, res) => {
       property.images.push(...newImages);
     }
 
-    // Parse nested JSON fields if needed
     const updatedData = {
       ...req.body,
       area: req.body.area ? JSON.parse(req.body.area) : property.area,
@@ -100,7 +92,6 @@ export const updateProperty = async (req, res) => {
 
     res.json({ success: true, message: "Property updated successfully", data: property });
   } catch (error) {
-    console.error("Error updating property:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -116,7 +107,77 @@ export const deleteProperty = async (req, res) => {
 
     res.json({ success: true, message: "Property deleted successfully" });
   } catch (error) {
-    console.error("Error deleting property:", error);
     res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// 🌐 Public: Get All Approved Properties (Home Page)
+export const getAllPropertiesList = async (req, res) => {
+  try {
+    const properties = await Property.find({ isApproved: true })
+      .populate("category", "name")
+      .populate("subcategory", "name")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({ success: true, data: properties });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
+// ✅ Approve Property
+export const approveProperty = async (req, res) => {
+  try {
+    const property = await Property.findByIdAndUpdate(
+      req.params.id,
+      { isApproved: true },
+      { new: true }
+    );
+
+    if (!property)
+      return res
+        .status(404)
+        .json({ success: false, message: "Property not found" });
+
+    res.json({
+      success: true,
+      message: "Property approved successfully",
+      data: property,
+    });
+  } catch (error) {
+    console.error("Error approving property:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while approving property",
+    });
+  }
+};
+
+// 🚫 Disapprove Property
+export const disapproveProperty = async (req, res) => {
+  try {
+    const property = await Property.findByIdAndUpdate(
+      req.params.id,
+      { isApproved: false },
+      { new: true }
+    );
+
+    if (!property)
+      return res
+        .status(404)
+        .json({ success: false, message: "Property not found" });
+
+    res.json({
+      success: true,
+      message: "Property disapproved successfully",
+      data: property,
+    });
+  } catch (error) {
+    console.error("Error disapproving property:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while disapproving property",
+    });
   }
 };

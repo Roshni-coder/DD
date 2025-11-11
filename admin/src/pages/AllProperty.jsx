@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Eye, Edit, Trash } from "lucide-react";
+import { Edit, Trash } from "lucide-react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +11,6 @@ const AllProperty = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // ✅ Fetch properties from backend
   const fetchProperties = async () => {
     try {
       const res = await axios.get(`${API_URL}/api/properties/list`);
@@ -21,8 +20,8 @@ const AllProperty = () => {
         toast.error("Failed to fetch properties");
       }
     } catch (error) {
-      console.error(error);
       toast.error("Error fetching properties");
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -32,27 +31,68 @@ const AllProperty = () => {
     fetchProperties();
   }, []);
 
-  // 🗑️ Delete Property
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this property?")) return;
 
     try {
-      await axios.delete(`${API_URL}/api/properties/delete/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
-        },
+      const res = await axios.delete(`${API_URL}/api/properties/delete/${id}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
       });
-      toast.success("Property deleted successfully");
-      setProperties((prev) => prev.filter((p) => p._id !== id));
+
+      if (res.data.success) {
+        toast.success("Property deleted successfully");
+        setProperties((prev) => prev.filter((p) => p._id !== id));
+      } else {
+        toast.error(res.data.message || "Failed to delete property");
+      }
     } catch (error) {
-      console.error(error);
       toast.error("Error deleting property");
+      console.error(error);
     }
   };
 
-  // ✏️ Edit Property
-  const handleEdit = (id) => {
-    navigate(`/edit-property/${id}`);
+  const handleApprove = async (id) => {
+    try {
+      const res = await axios.put(
+        `${API_URL}/api/properties/approve/${id}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
+        }
+      );
+
+      if (res.data.success) {
+        toast.success("✅ Property approved successfully");
+        fetchProperties();
+      } else {
+        toast.error(res.data.message || "Failed to approve property");
+      }
+    } catch (error) {
+      toast.error("Error approving property");
+      console.error(error);
+    }
+  };
+
+  const handleDisapprove = async (id) => {
+    try {
+      const res = await axios.put(
+        `${API_URL}/api/properties/disapprove/${id}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
+        }
+      );
+
+      if (res.data.success) {
+        toast.info("🚫 Property disapproved successfully");
+        fetchProperties();
+      } else {
+        toast.error(res.data.message || "Failed to disapprove property");
+      }
+    } catch (error) {
+      toast.error("Error disapproving property");
+      console.error(error);
+    }
   };
 
   return (
@@ -79,48 +119,39 @@ const AllProperty = () => {
               <th className="py-3 px-4">Price</th>
               <th className="py-3 px-4">Date</th>
               <th className="py-3 px-4 text-center">Actions</th>
+              <th className="py-3 px-4 text-center">Approval</th>
             </tr>
           </thead>
-
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan="8" className="text-center py-5 text-gray-500">
+                <td colSpan="9" className="text-center py-5 text-gray-500">
                   Loading properties...
                 </td>
               </tr>
             ) : properties.length === 0 ? (
               <tr>
-                <td colSpan="8" className="text-center py-5 text-gray-500">
+                <td colSpan="9" className="text-center py-5 text-gray-500">
                   No properties found
                 </td>
               </tr>
             ) : (
               properties.map((item) => (
-                <tr
-                  key={item._id}
-                  className="border-b hover:bg-gray-50 transition"
-                >
+                <tr key={item._id} className="border-b hover:bg-gray-50 transition">
                   <td className="py-3 px-4">
                     <img
                       src={
                         item.images?.length
-                          ? `http://localhost:9000${item.images[0]}`
+                          ? `${API_URL}${item.images[0]}`
                           : "https://via.placeholder.com/80"
                       }
                       alt={item.title}
                       className="w-16 h-14 rounded-md object-cover border"
                     />
                   </td>
-                  <td className="py-3 px-4 font-medium text-gray-800">
-                    {item.title}
-                  </td>
-                  <td className="py-3 px-4 text-gray-700">
-                    {item.category?.name || "-"}
-                  </td>
-                  <td className="py-3 px-4 text-gray-700">
-                    {item.subcategory?.name || "-"}
-                  </td>
+                  <td className="py-3 px-4 font-medium text-gray-800">{item.title}</td>
+                  <td className="py-3 px-4 text-gray-700">{item.category?.name || "-"}</td>
+                  <td className="py-3 px-4 text-gray-700">{item.subcategory?.name || "-"}</td>
                   <td className="py-3 px-4 text-gray-600">
                     {item.address?.city || item.address?.area || "-"}
                   </td>
@@ -132,7 +163,7 @@ const AllProperty = () => {
                   </td>
                   <td className="py-3 px-4 text-center space-x-3">
                     <button
-                      onClick={() => handleEdit(item._id)}
+                      onClick={() => navigate(`/edit-property/${item._id}`)}
                       className="text-green-500 hover:text-green-700"
                     >
                       <Edit className="inline w-5 h-5" />
@@ -143,6 +174,23 @@ const AllProperty = () => {
                     >
                       <Trash className="inline w-5 h-5" />
                     </button>
+                  </td>
+                  <td className="py-3 px-4 text-center space-x-3">
+                    {item.isApproved ? (
+                      <button
+                        onClick={() => handleDisapprove(item._id)}
+                        className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 transition"
+                      >
+                        Disapprove
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleApprove(item._id)}
+                        className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition"
+                      >
+                        Approve
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))

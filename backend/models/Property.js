@@ -41,6 +41,8 @@ const propertySchema = new mongoose.Schema(
       name: String,
       phone: String,
     },
+    // ✅ Admin Approval
+    isApproved: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

@@ -6,6 +6,9 @@ import {
   getPropertyById,
   updateProperty,
   deleteProperty,
+  approveProperty,
+  disapproveProperty,
+  getAllPropertiesList,
 } from "../controllers/propertyController.js";
 import { protectAdmin } from "../middleware/authAdmin.js";
 
@@ -21,8 +24,11 @@ const upload = multer({ storage });
 // ✅ Routes
 router.post("/add", protectAdmin, upload.array("images", 10), addProperty);
 router.get("/list", getProperties);
+router.get("/property-list", getAllPropertiesList); // 🟢 For frontend home page
 router.get("/:id", getPropertyById);
 router.put("/edit/:id", protectAdmin, upload.array("images", 10), updateProperty);
 router.delete("/delete/:id", protectAdmin, deleteProperty);
+router.put("/approve/:id", protectAdmin, approveProperty);
+router.put("/disapprove/:id", protectAdmin, disapproveProperty);
 
 export default router;

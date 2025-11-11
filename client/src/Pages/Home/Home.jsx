@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
-  AiOutlineSafetyCertificate,
   AiOutlineStar,
   AiOutlineDollarCircle,
 } from "react-icons/ai";
-import { FaShieldAlt, FaHome, FaUsers, FaBuilding, FaMapMarkerAlt } from "react-icons/fa";
+import {  FaBuilding, FaMapMarkerAlt } from "react-icons/fa";
 import HeroSection from "../../Components/HeroSection/HeroSection";
 import DiscoverSection from "../../Components/DiscoverSection/DiscoverSection"; 
 import TopDevelopers from "../../Components/TopDevelopers/TopDevelopers";
@@ -27,17 +26,19 @@ const Home = () => {
   });
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchProperties = async () => {
+    useEffect(() => {
+    (async () => {
       try {
-        const res = await axios.get(`${API_BASE}/api/properties/list`);
-        setProperties(res.data.data || []);
+        const [propRes] = await Promise.all([
+          axios.get(`${API_BASE}/api/properties/property-list`),
+        ]);
+        setProperties(propRes.data.data || []);
       } catch (error) {
-        console.error("Error fetching properties:", error);
+        console.error("Error loading data:", error);
       }
-    };
-    fetchProperties();
+    })();
   }, []);
+
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -156,12 +157,8 @@ const Home = () => {
         categories={categories}
         subcategories={subcategories}
       />
-
-      {/* 🏘 Discover Section Component */}
-      <DiscoverSection />
-      <TopLocalities />
-      <TopDevelopers />
-
+        
+        
       {/* 🏙 Featured Properties */}
       <section className="py-10 bg-white">
         <div className="max-w-7xl mx-auto px-6 text-center">
@@ -205,6 +202,11 @@ const Home = () => {
           )}
         </div>
       </section>
+      {/* 🏘 Discover Section Component */}
+      <DiscoverSection />
+      <TopLocalities />
+      <TopDevelopers />
+
 
       {/* Stats Section */}
       <section className="bg-gradient-to-r from-blue-600 to-red-600 py-4 text-white">
