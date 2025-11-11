@@ -2,16 +2,17 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
-  AiOutlineSearch,
   AiOutlineSafetyCertificate,
   AiOutlineStar,
-  AiOutlineHome,
   AiOutlineDollarCircle,
 } from "react-icons/ai";
 import { FaShieldAlt, FaHome, FaUsers, FaBuilding, FaMapMarkerAlt } from "react-icons/fa";
+import HeroSection from "../../Components/HeroSection/HeroSection";
+import DiscoverSection from "../../Components/DiscoverSection/DiscoverSection"; 
+import TopDevelopers from "../../Components/TopDevelopers/TopDevelopers";
+import TopLocalities from "../../Components/TopLocalities/TopLocalities";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
-
 
 const Home = () => {
   const [properties, setProperties] = useState([]);
@@ -145,131 +146,21 @@ const Home = () => {
     { number: "0%", label: "Brokerage Fee" },
   ];
 
-  const trustFeatures = [
-    {
-      icon: <FaShieldAlt className="text-blue-600 text-4xl" />,
-      title: "Verified Listings",
-      description: "Every property undergoes a 3-step verification process.",
-    },
-    {
-      icon: <AiOutlineSafetyCertificate className="text-red-600 text-4xl" />,
-      title: "Transparent Pricing",
-      description: "No hidden charges. See exactly what you pay for.",
-    },
-    {
-      icon: <FaHome className="text-blue-600 text-4xl" />,
-      title: "Direct Owner Contact",
-      description: "Talk directly to property owners — no middlemen.",
-    },
-    {
-      icon: <FaUsers className="text-red-600 text-4xl" />,
-      title: "5000+ Happy Families",
-      description: "Trusted by families across India since 2018.",
-    },
-  ];
-
   return (
     <div className="font-sans text-gray-800">
-      {/* 🏠 Hero Section */}
-      <section className="mt-25 relative h-[75vh] flex flex-col justify-center items-center text-center bg-gray-50 px-6">
-        <div className="absolute inset-0 bg-[url('https://www.toptal.com/designers/subtlepatterns/patterns/white-wall.png')] opacity-20"></div>
-        <div className="relative z-10 flex flex-col items-center space-y-5 max-w-6xl w-full">
-          <h1 className="text-5xl md:text-6xl font-bold text-red-600">
-            Welcome to <span className="text-blue-900">DealDirect</span>
-          </h1>
-          <p className="text-lg md:text-xl text-gray-600">
-            Search from verified listings & connect directly with property owners.
-          </p>
+      
+      {/* 🏠 Hero Section Component */}
+      <HeroSection
+        filters={filters}
+        setFilters={setFilters}
+        categories={categories}
+        subcategories={subcategories}
+      />
 
-          {/* 🔍 Search Filters */}
-          <div className="bg-white shadow-2xl rounded-2xl p-6 w-full max-w-5xl border border-gray-100">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-              <select
-                value={filters.category}
-                onChange={(e) =>
-                  setFilters({
-                    ...filters,
-                    category: e.target.value,
-                    subcategory: "",
-                  })
-                }
-                className="border bg-red-600 rounded-full px-4 py-3 text-white focus:ring-2 focus:ring-red-500 outline-none"
-              >
-                <option value="">All Categories</option>
-                {categories.map((c) => (
-                  <option key={c._id} value={c._id}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
-
-              <select
-                value={filters.subcategory}
-                onChange={(e) =>
-                  setFilters({ ...filters, subcategory: e.target.value })
-                }
-                disabled={!filters.category}
-                className="border bg-red-600 rounded-full px-4 py-3 text-white focus:ring-2 focus:ring-red-500 outline-none"
-              >
-                <option value="">All Subcategories</option>
-                {subcategories.map((sc) => (
-                  <option key={sc._id} value={sc._id}>
-                    {sc.name}
-                  </option>
-                ))}
-              </select>
-
-              <input
-                type="text"
-                placeholder="City"
-                value={filters.city}
-                onChange={(e) =>
-                  setFilters({ ...filters, city: e.target.value })
-                }
-                className="border bg-red-600 rounded-full px-4 py-3 text-white focus:ring-2 focus:ring-red-500 outline-none"
-              />
-              <input
-                type="text"
-                placeholder="State"
-                value={filters.state}
-                onChange={(e) =>
-                  setFilters({ ...filters, state: e.target.value })
-                }
-                className="border bg-red-600 rounded-full px-4 py-3 text-white focus:ring-2 focus:ring-red-500 outline-none"
-              />
-            </div>
-
-            <div className="flex mt-4">
-              <input
-                type="text"
-                placeholder="Search by keyword or title"
-                value={filters.search}
-                onChange={(e) =>
-                  setFilters({ ...filters, search: e.target.value })
-                }
-                className="border w-full rounded-full px-4 text-gray-700 focus:ring-2 focus:ring-red-500 outline-none"
-              />
-              <button className="ml-3 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-full font-semibold text-lg flex items-center justify-center gap-2">
-                <AiOutlineSearch /> Search
-              </button>
-            </div>
-          </div>
-
-          {/* Hero Tabs */}
-          <div className="flex flex-wrap justify-center gap-3 mt-8">
-            {["Buy", "Rent", "New Projects", "PG", "Plot", "Commercial", "Post Free Ad"].map(
-              (tab, i) => (
-                <button
-                  key={i}
-                  className="bg-white border border-gray-200 text-gray-700 hover:text-white hover:bg-red-600 font-semibold px-5 py-2 rounded-full shadow-md transition-all duration-200"
-                >
-                  {tab}
-                </button>
-              )
-            )}
-          </div>
-        </div>
-      </section>
+      {/* 🏘 Discover Section Component */}
+      <DiscoverSection />
+      <TopLocalities />
+      <TopDevelopers />
 
       {/* 🏙 Featured Properties */}
       <section className="py-10 bg-white">
@@ -314,7 +205,9 @@ const Home = () => {
           )}
         </div>
       </section>
-        <section className="bg-gradient-to-r from-blue-600 to-red-600 py-4 text-white">
+
+      {/* Stats Section */}
+      <section className="bg-gradient-to-r from-blue-600 to-red-600 py-4 text-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {stats.map((stat, idx) => (
@@ -422,7 +315,7 @@ const Home = () => {
             <button className="bg-white text-red-600 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition">
               Browse Properties
             </button>
-            <button className="border-2 border-white text-white px-8 py-4 rounded-xl font-semibold hover:bg-white/10 transition">
+            <button className="border-2 border-white text-white px-8 py-4 rounded-xl font-semibold hover:bg-white/10 transition flex items-center justify-center gap-2">
               <AiOutlineDollarCircle /> Get Home Loan
             </button>
           </div>

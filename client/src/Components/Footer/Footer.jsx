@@ -29,37 +29,52 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-gradient-to-tr from-[#1a1a2e] to-[#16213e] text-white ">
-      <div className="max-w-7xl mx-auto px-6 py-12">
+    <footer className="bg-gray-900 text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
 
         {/* Top Section */}
-        <div className="grid md:grid-cols-3 gap-12 border-b border-white/10 pb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 pb-8 border-b border-gray-800">
 
-          {/* Brand & Contact */}
-          <div className="space-y-6">
+          {/* Brand & Contact - ORIGINAL LOGO KEPT */}
+          <div className="space-y-5">
             <div className="text-2xl font-bold">
               <span className="text-red-600">deal</span>
               <span className="text-blue-800">direct</span>
               <sup className="text-red-600 text-sm ml-1">™</sup>
             </div>
-            <p className="text-gray-400 text-sm">
+            <p className="text-gray-400 text-sm leading-relaxed">
               Your trusted partner for direct property deals without brokerage fees.
             </p>
             <div className="space-y-3 text-gray-300 text-sm">
-              <div className="flex items-center gap-2"><AiOutlineMail className="text-red-600" /> hello@dealdirect.com</div>
-              <div className="flex items-center gap-2"><AiOutlinePhone className="text-red-600" /> +91 1800-123-4567</div>
-              <div className="flex items-center gap-2"><AiOutlineEnvironment className="text-red-600" /> Mumbai, India</div>
+              <div className="flex items-center gap-2">
+                <AiOutlineMail className="text-blue-600 text-base flex-shrink-0" /> 
+                <span>hello@dealdirect.com</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <AiOutlinePhone className="text-blue-600 text-base flex-shrink-0" /> 
+                <span>+91 1800-123-4567</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <AiOutlineEnvironment className="text-blue-600 text-base flex-shrink-0" /> 
+                <span>Mumbai, India</span>
+              </div>
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div className="grid grid-cols-2 gap-6">
+          {/* Quick Links - 2 Column Grid */}
+          <div className="col-span-1 sm:col-span-2 lg:col-span-2 grid grid-cols-2 sm:grid-cols-4 gap-6 lg:gap-8">
             {Object.entries(quickLinks).map(([category, links]) => (
               <div key={category}>
-                <h4 className="font-semibold text-white mb-4">{category}</h4>
-                <div className="flex flex-col gap-2">
+                <h4 className="font-semibold text-white text-sm mb-4">{category}</h4>
+                <div className="flex flex-col gap-2.5">
                   {links.map((link, idx) => (
-                    <a key={idx} href="#" className="text-gray-400 text-sm hover:text-red-600 transition">{link}</a>
+                    <a 
+                      key={idx} 
+                      href="#" 
+                      className="text-gray-400 text-sm hover:text-blue-600 transition-colors"
+                    >
+                      {link}
+                    </a>
                   ))}
                 </div>
               </div>
@@ -69,42 +84,57 @@ const Footer = () => {
           {/* Cities & Newsletter */}
           <div className="space-y-6">
             <div>
-              <h4 className="font-semibold text-white mb-4">Popular Cities</h4>
+              <h4 className="font-semibold text-white text-sm mb-4">Popular Cities</h4>
               <div className="flex flex-wrap gap-2">
                 {cities.map((city, idx) => (
-                  <a key={idx} href="#" className="text-gray-300 text-xs px-3 py-1 rounded-full border border-white/10 hover:bg-red-600 hover:text-white transition">{city}</a>
+                  <a 
+                    key={idx} 
+                    href="#" 
+                    className="text-gray-300 text-xs px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-blue-600 hover:text-white transition-colors"
+                  >
+                    {city}
+                  </a>
                 ))}
               </div>
             </div>
 
             <div>
-              <h4 className="font-semibold text-white mb-4">Stay Updated</h4>
-              <div className="flex gap-2">
+              <h4 className="font-semibold text-white text-sm mb-4">Stay Updated</h4>
+              <div className="flex flex-col sm:flex-row gap-2">
                 <input 
                   type="email" 
-                  placeholder="Your email address"
-                  className="flex-1 px-4 py-2 rounded-md bg-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
+                  placeholder="Your email"
+                  className="flex-1 px-3.5 py-2.5 rounded-lg bg-gray-800 text-white text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 border border-gray-700"
                 />
-                <button className="bg-red-600 px-4 py-2 rounded-md font-semibold hover:bg-red-700 transition">Subscribe</button>
+                <button className="bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-2.5 rounded-lg text-sm font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all shadow-sm whitespace-nowrap">
+                  Subscribe
+                </button>
               </div>
             </div>
           </div>
         </div>
 
         {/* Bottom Section */}
-        <div className="mt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-400 text-sm">
+        <div className="mt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-gray-400 text-sm">
           <p>&copy; {currentYear} DealDirect. All rights reserved.</p>
+          
           <div className="flex gap-3">
             {socialLinks.map((social, idx) => (
-              <a key={idx} href={social.url} className="w-9 h-9 flex items-center justify-center rounded-full border border-white/20 hover:bg-red-600 hover:shadow-lg transition">
+              <a 
+                key={idx} 
+                href={social.url} 
+                aria-label={social.name}
+                className="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-800 border border-gray-700 hover:bg-blue-600 hover:border-blue-600 transition-all text-lg"
+              >
                 {social.icon}
               </a>
             ))}
           </div>
-          <div className="flex flex-wrap gap-4">
-            <a href="/privacy" className="hover:text-red-600 transition">Privacy</a>
-            <a href="/terms" className="hover:text-red-600 transition">Terms</a>
-            <a href="/cookies" className="hover:text-red-600 transition">Cookies</a>
+          
+          <div className="flex flex-wrap gap-4 text-xs sm:text-sm">
+            <a href="/privacy" className="hover:text-blue-600 transition-colors">Privacy Policy</a>
+            <a href="/terms" className="hover:text-blue-600 transition-colors">Terms of Service</a>
+            <a href="/cookies" className="hover:text-blue-600 transition-colors">Cookie Policy</a>
           </div>
         </div>
 
